@@ -1,0 +1,130 @@
+﻿<h2>Advanced Search</h2>
+
+<p>
+    Select features by their attributes using a <b>Query Expression</b>.
+</p>
+
+<div class="centerContent">
+    <img src="Content/help/gisviewer/QueryTools.jpg" alt="Query Tools" /><br />
+</div>
+
+<br />
+Follow the below steps to construct a <strong>Query Expression</strong>:
+<br />
+<ol>
+    <li>Choose a layer to query for features from the <strong>Active Layer</strong> drop down list.<br />
+        <strong>Note:</strong> Only layers that are present in the map will appear in this list.<br />
+        <br />
+        <img src="Content/help/gisviewer/ActiveLayer.jpg" alt="Active Layer" />
+        <br />
+        <br />
+    </li>
+    <li>Choose from the <strong>Field:</strong> drop down list the attribute column name to search for values in.
+        <br />
+        E.g. To find a road choose;
+        <br />
+        <strong>Active Layer:</strong> Road labels<br />
+        <strong>Field:</strong> name<br />
+        <br />
+    </li>
+    <li>Choose an <strong>Operator:</strong> from the drop down list.
+        <br />
+        <br />
+        <img src="Content/help/gisviewer/QueryOperator.jpg" alt="Operator" />
+        <br />
+        <br />
+    </li>
+    <li>Enter the value to search for into <strong>Sample Values</strong>
+        <br />
+        Click/tap
+        <img src="Content/images/GenericSearch32.png" alt="Get Sample Values" class="smallIcon" />
+        to get a sample of values in the chosen field that are present in the current map extent.
+    <br />
+        <br />
+    </li>
+    <li>Click/tap <strong>Add Expression</strong> then <strong>Start Search</strong>
+        <br />
+        <br />
+    </li>
+    <li>
+        <strong>Query Expression Examples:</strong><br />
+        (Active Layer - <strong>expression</strong>)
+        <br />
+        <br />
+        <ol type="i">
+            <li>Land Parcels - <strong>TA_Property_ID = '21251-08700  '</strong>
+                <br />
+                <br />
+            </li>
+            <li>Consented Activities - <strong>Lapses < '1992-10-05T00:00:00.000Z'</strong>
+                <br />
+                <br />
+            </li>
+            <li>Camping Site - <strong>DATE_SUPPLIED > '2013-02-22T00:00:00.000Z'</strong>
+                <br />
+                <br />
+            </li>
+            <li>Parks, forests and reserves labels - <strong>PLACENAME LIKE 'Pudding%'</strong>
+                <br />
+                <br />
+            </li>
+            <li>Consented Activities - <strong>ConsentNo IN ('CRC905348.2','CRC040177')</strong>
+                <br />
+                <br />
+            </li>
+        </ol>
+    </li>
+    <li>Query results appear in the <strong>Results Table</strong>
+        <img src="Content/images/48x48/menuTab.png" alt="Results Pane" class="smallIcon" />
+        at the bottom of the screen.<br />
+        From the <strong>Results Table</strong>;
+        <ul>
+            <li>Single click/tap records in the results table to highlight these in the map.<br />
+                Hold <strong>Ctrl</strong> &amp; click selected records to highlight multiple records in the results table.               
+    <br />
+                <br />
+            </li>
+            <li>Click/tap
+                <img src="Content/images/48x48/ZoomtoSelected.png" alt="ZoomtoSelected" class="smallIcon" />
+                to zoom to the extent of selected records.      
+    <br />
+                <br />
+            </li>
+            <li>Double click records in the results table to zoom to these features in the map.     
+    <br />
+                <br />
+            </li>
+            <li>Click/tap
+                <img src="Content/images/48x48/buffer.png" alt="Buffer" class="smallIcon" />
+                to buffer selected features.<br />
+                <strong>Active Layer</strong> features intersecting the buffer can be selected by right-clicking the buffer and choosing <strong>Select Features in Active Layer</strong>.<br />
+                <br />
+                <img src="Content/help/gisviewer/BufferOptions.jpg" alt="Buffer Osptions" />
+                <br />
+                <br />
+            </li>
+            <li>Click/tap
+                <img src="Content/images/48x48/SaveAs.png" alt="Saveas" class="smallIcon" />
+                to save the selected records to a csv file.   
+    <br />
+                <br />
+            </li>
+            <li>Click/tap
+                <img src="Content/images/48x48/UnSelect.png" alt="UnSelect" class="smallIcon" />
+                to unselect the highlighted records. 
+    <br />
+                <br />
+            </li>
+            <li>Click/tap
+                <img src="Content/images/48x48/Diagonal Cross.png" alt="Diagonal Cross" class="smallIcon" />
+                to remove highlighted records from the results table.    
+    <br />
+                <br />
+            </li>
+            <li>Click/tap
+                <img src="Content/images/48x48/RecycleBin.png" alt="RecycleBin" class="smallIcon" />
+                to remove all records from the results table.
+            </li>
+        </ul>
+    </li>
+</ol>

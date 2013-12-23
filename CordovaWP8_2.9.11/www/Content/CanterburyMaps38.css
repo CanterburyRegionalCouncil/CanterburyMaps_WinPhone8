@@ -1,0 +1,39 @@
+#container li {
+background-image: url("CanterburyMaps32.png");
+    background-repeat: no-repeat;   
+    list-style: none outside none;
+}	
+.i-CanterburyMaps{background-position:0 0 ; width: 32px ; height: 32px; }
+.i-Smoke{background-position:-42 0 ; width: 32px ; height: 32px; }
+.i-Bus{background-position:-84 0 ; width: 32px ; height: 32px; }
+.i-Business-Man{background-position:-126 0 ; width: 32px ; height: 32px; }
+.i-Home{background-position:-168 0 ; width: 32px ; height: 32px; }
+.i-Recycle-Bin{background-position:-210 0 ; width: 32px ; height: 32px; }
+.i-Water-Tap{background-position:-252 0 ; width: 32px ; height: 32px; }
+.i-Water-Drop{background-position:-294 0 ; width: 32px ; height: 32px; }
+.i-Swimming{background-position:-336 0 ; width: 32px ; height: 32px; }
+.i-Map-and-Location{background-position:-378 0 ; width: 32px ; height: 32px; }
+.i-Building{background-position:-420 0 ; width: 32px ; height: 32px; }
+.i-Cycling{background-position:-462 0 ; width: 32px ; height: 32px; }
+.i-Statue-Of-Liberty{background-position:-504 0 ; width: 32px ; height: 32px; }
+.i-Navigation{background-position:-546 0 ; width: 32px ; height: 32px; }
+.i-Maps{background-position:-588 0 ; width: 32px ; height: 32px; }
+.i-Location-Marker{background-position:-630 0 ; width: 32px ; height: 32px; }
+.i-Add{background-position:-672 0 ; width: 32px ; height: 32px; }
+.i-Details-View{background-position:-714 0 ; width: 32px ; height: 32px; }
+.i-Menu{background-position:-756 0 ; width: 32px ; height: 32px; }
+.i-Collapse{background-position:-798 0 ; width: 32px ; height: 32px; }
+.i-Expand{background-position:-840 0 ; width: 32px ; height: 32px; }
+.i-Minus{background-position:-882 0 ; width: 32px ; height: 32px; }
+.i-Ignore{background-position:-924 0 ; width: 32px ; height: 32px; }
+.i-Find{background-position:-966 0 ; width: 32px ; height: 32px; }
+.i-Find-1{background-position:-1008 0 ; width: 32px ; height: 32px; }
+.i-Find-Data{background-position:-1050 0 ; width: 32px ; height: 32px; }
+.i-Printer{background-position:-1092 0 ; width: 32px ; height: 32px; }
+.i-Measuring-Tape{background-position:-1134 0 ; width: 32px ; height: 32px; }
+.i-Painting-Brush{background-position:-1176 0 ; width: 32px ; height: 32px; }
+.i-Color{background-position:-1218 0 ; width: 32px ; height: 32px; }
+.i-Help{background-position:-1260 0 ; width: 32px ; height: 32px; }
+.i-Save-As{background-position:-1302 0 ; width: 32px ; height: 32px; }
+.i-Zoom-In{background-position:-1344 0 ; width: 32px ; height: 32px; }
+.i-Zoom-Out{background-position:-1386 0 ; width: 32px ; height: 32px; }

@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Test geolocation</title>
+    <script type="text/javascript" src="Scripts/jquery-1.9.0.js"></script>
+    <script type="text/javascript" src="Scripts/modernizr-2.6.2.js"></script>
+    <script type="text/javascript">
+
+
+    </script>
+</head>
+<body>
+    <table>
+        <tbody>
+            <tr>
+                <td>
+                    Latitude:
+                </td>
+                <td id="tdLat">
+                    ...
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Longitude:
+                </td>
+                <td id="tdLong">
+                    ...
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Accuracy:
+                </td>
+                <td id="tdAccuracy">
+                    ...
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <script type="text/javascript">
+        function get_location() {
+            if (Modernizr.geolocation) {
+                navigator.geolocation.getCurrentPosition(show_map, handle_error);
+            } else {
+                alert('No Geolocation API');
+            }
+        }
+
+        function handle_error(err) {
+
+            switch (err.code) {
+                case 1:
+                    // Permission to use location services denied
+                    alert('User said no!');
+                    break
+
+                case 2:
+                    // Position unavailable
+                    alert('Unable to connect to the newtorkThere was a problem determining position!');
+                    break;
+
+                case 3:
+
+                    break;
+            }
+        };
+
+        function show_map(position) {
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+            var accuracy = position.coords.accuracy;
+
+            $('#tdLat').html(latitude.toString());
+            $('#tdLong').html(longitude.toString());
+            $('#tdAccuracy').html(accuracy.toString());
+        }
+
+        $(document).ready(function () {
+            get_location();
+        });
+    </script>
+</body>
+</html>

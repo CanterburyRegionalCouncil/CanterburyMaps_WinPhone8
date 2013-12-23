@@ -1,0 +1,90 @@
+﻿#panButton, #zoominButton, #zoomoutButton ,
+/* #zoomnextButton, #zoompreviousButton, #zoomfull,*/
+#printButton, #helpButton,
+#resultsButton,
+#map_zoom_slider,
+#mouseLocationX, #mouseLocationY, #mouseGridRef,
+#helpContainer
+{
+	display:none;
+}
+
+.resultTools {
+    right: 10px!important;
+}
+
+.toolbutton:hover
+{
+    background-color: #0B3861!important;
+}
+
+
+* {
+            /* prevent webkit from resizing text to fit */
+            -webkit-text-size-adjust: none;             
+            /* make transparent link selection, adjust last value opacity 0 to 1.0 */
+            -webkit-tap-highlight-color: rgba(0,0,0,0);     
+            }
+
+*:not(input,textarea) {
+    -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
+    -webkit-user-select: none;                 /* prevent copy paste, to allow, change 'none' to 'text' */
+}
+
+/*   GPS related */
+
+#gpsButton 
+{
+    position:absolute;
+    background-image: url('../Content/images/48x48/GPS.png');
+    background-color:white;
+    bottom:5px;
+    right:5px;
+    z-index:9999;
+    width: 48px;
+    height: 48px;
+    cursor: pointer;
+    margin: 3px;
+    background-repeat: no-repeat;
+}
+
+.GPSon {
+    background-color:lime!important;
+    -webkit-animation-duration: 3s;
+        -webkit-animation-iteration-count: infinite;
+        -webkit-animation-name: pulse;
+        -moz-animation-duration: 3s;
+        -moz-animation-iteration-count: infinite;
+        -moz-animation-name: pulse;
+    }
+
+      @-webkit-keyframes pulse {
+        0% {
+          opacity: 1.0;
+        }
+        45% {
+          opacity: 0.20;
+        }
+        100% {
+          opacity: 1.0;
+        }
+      }
+      @-moz-keyframes pulse {
+        0% {
+          opacity: 1.0;
+        }
+        45% {
+          opacity: 0.20;
+        }
+        100% {
+          opacity: 1.0;
+        }
+      }
+      #map_graphics_layer {
+        -webkit-animation-duration: 3s;
+        -webkit-animation-iteration-count: infinite;
+        -webkit-animation-name: pulse;
+        -moz-animation-duration: 3s;
+        -moz-animation-iteration-count: infinite;
+        -moz-animation-name: pulse;
+      }

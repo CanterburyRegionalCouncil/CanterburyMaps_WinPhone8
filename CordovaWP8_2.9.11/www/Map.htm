@@ -1,0 +1,884 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta
+        name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+    <!-- iOS Devices -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon" href="Content/images/ios/57x57iOS.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="Content/images/ios/72x72iOS.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="Content/images/ios/114x114iOS.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="Content/images/ios/144x144iOS.png" />
+    <!-- Windoze 8 -->
+    <!--<meta http-equiv="x-ua-compatible" content="IE=edge" />
+     <meta http-equiv="X-UA-Compatible" content="IE=7, IE=9" /> -->
+
+    <meta name="msapplication-TileImage" content="Content/images/win/144x144win.png">
+    <meta name="msapplication-TileColor" content="#ddd">
+
+    <meta name="title" content="Canterbury Maps">
+    <link rel="shortcut icon" href="favicon.ico" />
+    <title>Canterbury Maps</title>
+    <style type="text/css">
+        @import "Content/themes/start/jquery-ui-1.10.1.custom.min.css";
+        /*@import "Content/themes/base/jquery.ui.autocomplete.css";
+        @import "Content/themes/base/jquery.ui.dialog.css";*/
+        @import "http://serverapi.arcgisonline.com/jsapi/arcgis/3.4/js/dojo/dijit/themes/claro/claro.css";
+        @import "http://serverapi.arcgisonline.com/jsapi/arcgis/3.4/js/esri/css/esri.css";
+        @import "Content/Map.css";
+        @import "Content/quickmaps.css";
+        @import "Content/add2home.css";
+    </style>
+    <!-- Bootstrap -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+
+    <script type="text/javascript">
+        //var djConfig = {
+        //    parseOnLoad: true
+        //};
+        var dojoConfig = {
+            baseUrl: "http://serverapi.arcgisonline.com/jsapi/arcgis/3.4/js/",
+            tlmSiblingOfDojo: false,
+            parseOnLoad: true,
+            packages: [
+
+                { name: "dojo", location: "dojo/dojo" },
+                { name: "esri", location: "esri" },
+
+                { name: "dijit", location: "dojo/dijit" },
+                { name: "dojox", location: "dojo/dojox" }
+
+            ]
+        };
+        //LOOK INTO THESE
+
+
+        // check if the app is running in stand-alone mode
+        if (window.navigator.standalone) {
+            // stand-alone mode
+        } else {
+            // not in stand-alone mode
+        }
+
+        //swipable
+        //http://stephband.info/jquery.event.swipe/
+
+        //touchable
+        //https://github.com/dotmaster/Touchable-jQuery-Plugin
+
+        /* 
+
+        Detect Device
+        
+        http://www.abeautifulsite.net/blog/2011/11/detecting-mobile-devices-with-javascript/ 
+        
+        */
+        var isMobile = {
+            Android: function () {
+                return navigator.userAgent.match(/Android/i);
+            },
+            BlackBerry: function () {
+                return navigator.userAgent.match(/BlackBerry/i);
+            },
+            iOS: function () {
+                return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+            },
+            iPad: function () {
+                return navigator.userAgent.match(/iPad/i);
+            },
+            iPhone: function () {
+                return navigator.userAgent.match(/iPhone/i);
+            },
+            Opera: function () {
+                return navigator.userAgent.match(/Opera Mini/i);
+            },
+            Windows: function () {
+                return navigator.userAgent.match(/IEMobile/i);
+            },
+            Tablet: function () {
+                return navigator.userAgent.match(/iPad/i);
+            },
+            any: function () {
+                return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
+            }
+        };
+
+        var isIE = {
+            IE6: function () {
+                return navigator.userAgent.match(/MSIE 6/i);
+            },
+            IE7: function () {
+                return navigator.userAgent.match(/MSIE 7/i);
+            },
+            IE8: function () {
+                return navigator.userAgent.match(/MSIE 8/i);
+            },
+            IE9: function () {
+                return navigator.userAgent.match(/MSIE 9/i);
+            },
+            IE10: function () {
+                return navigator.userAgent.match(/MSIE 10/i);
+            },
+            IE: function () {
+                return navigator.userAgent.match(/MSIE/i);
+            },
+            IEless9: function () {
+                return (isIE.IE6() || isIE.IE7() || isIE.IE8() || isIE.IE9());
+            },
+            any: function () {
+                return (isIE.IE6() || isIE.IE7() || isIE.IE8() || isIE.IE9 || isIE.IE);
+            }
+        };
+
+
+        //load css mobile files
+        if (isMobile.any() != null & isMobile.iPad() == null)
+            loadjscssfile("Content/phone.css", "css"); ////dynamically load and add this .css file
+
+        //load css mobile files
+        if (isMobile.iPad() != null)
+            loadjscssfile("Content/tablet.css", "css"); ////dynamically load and add this .css file
+
+        //function to load css or js file
+        function loadjscssfile(filename, filetype) {
+            if (filetype == "js") { //if filename is a external JavaScript file
+                var fileref = document.createElement('script');
+                fileref.setAttribute("type", "text/javascript");
+                fileref.setAttribute("src", filename);
+            }
+            else if (filetype == "esri") {
+                var fileref = document.createElement('script');
+                fileref.setAttribute("data-dojo-config", "async: true");
+                fileref.setAttribute("src", filename);
+            }
+            else if (filetype == "css") { //if filename is an external CSS file
+                var fileref = document.createElement("link");
+                fileref.setAttribute("rel", "stylesheet");
+                fileref.setAttribute("type", "text/css");
+                fileref.setAttribute("href", filename);
+            }
+            if (typeof fileref != "undefined")
+                document.getElementsByTagName("head")[0].appendChild(fileref);
+        }
+
+
+    </script>
+</head>
+<body class="claro">
+    <!-- start of side bar nav -->
+    <div id="sidebar" style="display: none;">
+        <div id="sidebarTabs">
+            <ul>
+                <li id="legendli" title="Legend" class="toolbutton"><a href="#legendTab">
+                    <img src="Content/images/48x48/Details View.png" /></a></li>
+                <li id="basemapli" title="BaseMap" class="toolbutton"><a href="#basemapTab">
+                    <img src="Content/images/48x48/CanterburyMaps.png" /></a></li>
+                <li id="toolsli" title="Tools" class="toolbutton"><a href="#toolsTab">
+                    <img src="Content/images/48x48/tools.png" /></a></li>
+                <li id="helpli" title="Help" class="toolbutton"><a href="#helpTab">
+                    <img src="Content/images/48x48/Help.png" /></a></li>
+                <li id="aboutli" title="About" class="toolbutton"><a href="#aboutTab" title="About" id="aboutLink">
+                    <img src="Content/images/48x48/Home.png" /></a></li>
+                <!--<li id="closeli"><a href="#closeTab" onclick="javascript:ecan.mapviewer.toggleSideBar3();">
+                    <img src="Content/images/48x48/MenuTab.png" /><span class="sidebarTitles"> Close</span></a></li>-->
+            </ul>
+            <div title="Map Layers" id="legendTab">
+                <div id="legendContainer">
+                    <div id="mapTitle" class="toolboxTitle gradBackground"></div>
+                    <div id="legendOptions">
+                        <img src="Content/images/expand.png" alt="Expand all legend groups" title="Click to expand all legend groups"
+                            class="legendOption" onclick="ecan.mapviewer.showhideLegendAll('expand')" />
+                        <img src="Content/images/collapse.png" alt="Collapse all legend groups" title="Click to collapse all legend groups"
+                            class="legendOption" onclick="ecan.mapviewer.showhideLegendAll('collapse')" />
+                        <!--<img src="Content/images/CheckBoxChecked.png" alt="Show all layer groups" title="Click to make all layer groupss visible"
+                            class="legendOption" onclick="ecan.mapviewer.showhideLayersAll('show')" />
+                        <img src="Content/images/CheckBoxUnChecked.png" alt="Hide all layer groups" title="Click to turn all visible layer groups off"
+                            class="legendOption" onclick="ecan.mapviewer.showhideLayersAll('hide')" />-->
+                    </div>
+                    <div id="operationalLayersLegend">
+                    </div>
+                </div>
+            </div>
+
+            <div title="BaseMap" id="basemapTab">
+                <div id="basemapContainer">
+                    <div id="basemapGallery">
+                    </div>
+                </div>
+            </div>
+            <div title="About" id="aboutTab">
+                <div id="aboutContainer">
+                    <div id="aboutdiv">
+                        <p>About</p>
+                        <img src="Content/images/canterbury-maps-logo-no-label-small.png" />
+                    </div>
+                </div>
+            </div>
+            <div title="Help" id="helpTab">
+                <div id="helpContainer_2">
+                    <div id="helpTitle" class="toolboxTitle gradBackground">Help for GIS Viewer</div>
+                    <div class="helpSelection">
+                        <label for="helpTopic">Help Topic</label>
+                        <select id="helpTopic">
+                        </select>
+                    </div>
+                    <div id="helpdiv">
+                        <p>Help</p>
+                    </div>
+                </div>
+            </div>
+            <div title="Tools" id="toolsTab">
+
+                <div id="toolContainer">
+                    <div id="measurementContainer" style="display: none;" class="toolbox">
+                        <div class="toolboxTitle gradBackground">
+                            Measurement Tool
+                        </div>
+                        <div id="measurementTool" class="toolbox">
+                        </div>
+                    </div>
+                    <div id="drawingContainer" style="display: none;" class="toolbox">
+                        <div class="toolboxTitle gradBackground">
+                            Drawing Tools
+                        </div>
+                        <div class="drawToolsContainer">
+                            <img src="Content/images/48x48/Point.png" alt="Draw Point" id="drawPoint" class="drawtool"
+                                title="Draw Point" onclick="ecan.mapviewer.activateDrawTool('point')" />
+                            <img src="Content/images/48x48/Polyline.png" alt="Draw Line" id="drawLine" class="drawtool"
+                                title="Draw Line" onclick="ecan.mapviewer.activateDrawTool('line')" />
+                            <img src="Content/images/48x48/freehandpolyline.png" alt="Draw Freehand Line" id="drawFreeLine"
+                                class="drawtool" title="Draw Freehand Line" onclick="ecan.mapviewer.activateDrawTool('freeline')" />
+                            <img src="Content/images/48x48/Polygon.png" alt="Draw Polygon" class="drawtool" id="drawPolygon"
+                                title="Draw Polygon" onclick="ecan.mapviewer.activateDrawTool('polygon')" />
+                            <img src="Content/images/48x48/FreehandPolygon.png" alt="Draw Freehand Polygon" class="drawtool"
+                                id="drawFreePolygon" title="Draw Freehand Polygon" onclick="ecan.mapviewer.activateDrawTool('freepolygon')" />
+                            <img src="Content/images/48x48/Circle.png" alt="Draw Circle" class="drawtool" id="drawCircle"
+                                title="Draw Circle" onclick="ecan.mapviewer.activateDrawTool('circle')" />
+                            <img src="Content/images/48x48/Ellipse.png" alt="Draw Ellipse" class="drawtool"
+                                id="drawEllipse" title="Draw Ellipse" onclick="ecan.mapviewer.activateDrawTool('ellipse')" />
+                            <img src="Content/images/48x48/Extent.png" alt="Draw Rectangle" class="drawtool" id="drawRectangle"
+                                title="Draw Rectangle" onclick="ecan.mapviewer.activateDrawTool('rectangle')" />
+                            <img src="Content/images/48x48/Text Edit.png" alt="Add Text" class="drawtool" id="drawText"
+                                title="Add Text" onclick="ecan.mapviewer.activateDrawTool('text')" />
+                            <img src="Content/images/48x48/RecycleBin.png" alt="Clear Drawn Graphics" class="drawtool"
+                                id="clearGraphics" title="Clear Drawn Graphics" onclick="ecan.mapviewer.clearDrawnGraphics()" />
+                            <img src="Content/images/48x48/hand.png" alt="Stop Drawing" class="drawtool" id="stopDrawing"
+                                title="Stop Drawing" onclick="ecan.mapviewer.stopDrawing()" />
+                        </div>
+                        <div class="toolboxTitle">
+                            Symbol Settings
+                        </div>
+                        <div id="symbolSettingsContainer">
+                            <div style='text-align: justify'>
+                                Steps:<br />
+                                1. select a tool<br />
+                                2. select a symbol<br />
+                                3. draw!<br />
+                            </div>
+                        </div>
+                        <div id="textsymbolSettingsContainer" style="display: none;">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>Font:
+                                        </td>
+                                        <td>
+                                            <select id="fontSelect" title="Select the font to use in new labels" style="font-family: Serif;" class="fontType"></select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Colour:
+                                        </td>
+                                        <td>
+                                            <select id="fontColour" title="Select the colour to use in new labels" class="fontColour"></select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Size:
+                                        </td>
+                                        <td>
+                                            <select id="fontSizeSelect" title="Select the size of the font to use in new labels"
+                                                style="font-size: 12pt;" class="fontSize">
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr style="display: none;">
+                                        <td>Rotation:
+                                        </td>
+                                        <td>
+                                            <select id="fontRotation" title="Select the text rotation angle to use in new labels" class="labelRotation"></select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Style:
+                                        </td>
+                                        <td>
+                                            <select id="fontStyle" title="Select the text style to use in new labels" class="fontStyle"></select>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="locateContainer" style="display: none;" class="toolbox">
+                        <div class="toolboxTitle">
+                            Location Tools
+                        </div>
+                        <div id="locateTool">
+                        </div>
+                    </div>
+                    <div id="idContainer" style="display: none;" class="toolbox">
+                        <div class="toolboxTitle gradBackground">
+                            Identify Tools
+                        </div>
+                        <div class="idListContainer">
+                            <span>Active Layer: </span>
+                            <select id="activeLayerListID" class="activeLayerList" onchange="ecan.mapviewer.activeLayerListChangeID() "
+                                title="Select the layer that you wish to search on">
+                            </select>
+                        </div>
+                        <div class="idToolsContainer">
+                            <img src="Content/images/48x48/Point.png" alt="Draw Point" id="idPoint" class="idtool"
+                                title="Identify at Point" onclick="ecan.mapviewer.activateIDTool('point')" />
+                            <img src="Content/images/48x48/Polyline.png" alt="Draw Line" id="idLine" class="idtool"
+                                title="Identify with Line" onclick="ecan.mapviewer.activateIDTool('line')" />
+                            <img src="Content/images/48x48/Polygon.png" alt="Draw Polygon" class="idtool" id="idPolygon"
+                                title="Identify with Polygon" onclick="ecan.mapviewer.activateIDTool('polygon')" />
+                            <img src="Content/images/48x48/Extent.png" alt="Draw Rectangle" class="idtool" id="idRectangle"
+                                title="Identify with Rectangle" onclick="ecan.mapviewer.activateIDTool('rectangle')" />
+                            <img src="Content/images/48x48/hand.png" alt="Stop Drawing" class="idtool" id="idStopDrawing"
+                                title="Stop Drawing" onclick="ecan.mapviewer.stopDrawing()" />
+                        </div>
+                        <div id="idWorking" class="loading hidden">
+                            Searching...
+                       
+                        </div>
+                    </div>
+                    <div id="queryContainer" style="display: none;" class="toolbox">
+                        <div class="toolboxTitle gradBackground">
+                            Query Tools
+                        </div>
+                        <div class="idListContainer">
+                            <span>Active Layer: </span>
+                            <select id="activeLayerListQuery" class="activeLayerList" onchange="ecan.mapviewer.activeLayerListChangeQuery()"
+                                title="Select the layer that you wish to search on">
+                            </select>
+                        </div>
+                        <div id="queryLayerDetails" class="idListContainer">
+                        </div>
+                        <div id="queryStringContainer" class="queryStringContainer">
+                            <button onclick="ecan.mapviewer.insertQueryString()" title="Click to add the full expression to the query string">
+                                Add Expression</button>
+                            <button id="addSampleValueButton" onclick="ecan.mapviewer.insertValueString()" title="Click to add the current sample value to the query string" style="display: none;">
+                                Add Value</button>
+                            <button id="resetQueryButton" onclick="ecan.mapviewer.resetQueryString()" title="Click to reset the query string">
+                                Reset Query</button><br />
+                            <br />
+                            <textarea cols="38" rows="8" id="queryStringText" onfocus="ecan.mapviewer.queryTextAreaChange()"
+                                onkeyup="ecan.mapviewer.queryTextAreaChange()"></textarea><br />
+                            <br />
+                            <button id="executeSearchButton" onclick="ecan.mapviewer.queryFeatures()" disabled="disabled">
+                                Start Search</button>
+                        </div>
+                        <div id="queryWorking" class="loading hidden">
+                            Searching...
+                       
+                        </div>
+                    </div>
+                </div>
+                <span class="hint">hint: select a tool from the menu</span>
+            </div>
+
+        </div>
+    </div>
+    <!-- end of side bar -->
+    <div id="mainContainer" data-dojo-type="dijit/layout/BorderContainer" style="width: 100%; height: 100%; margin: 0"
+        data-dojo-props="design: 'headline', gutters: false" class="gradBackground">
+
+        <!-- start of top nav -->
+        <div id='topNav' class="details" data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="design: 'headline', gutters: false,region: 'top'">
+            <div id="browserSupport" class="">
+            </div>
+            <div id="menuContainer" class="inline gradBackground">
+                <div id="headingContainer" class="inline">
+                    <a href="http://canterburymaps.govt.nz" target="_blank">
+                        <img src="Content/images/canterbury-maps-logo-no-label-small.png" alt="logo" style="border: 0" /></a>
+                </div>
+                <div id="sidebarmenuButton" class="toolbutton" title="side menu" onclick="ecan.mapviewer.toggleSideBar()">
+                </div>
+                <div id="navtools">
+                    <div id="searchboxContainer" class="inline ui-widget" style="vertical-align: middle;">
+                        <input id="searchText" type="text" placeholder="Search for an address" class="autoCompleteInput" />
+                    </div>
+                    <div id="mapgallery" class="toolbutton mapgallery" onclick="ecan.mapviewer.buttonclick('quickmaps')"
+                        title="Map Gallery">
+                    </div>
+                    <div id="panButton" class="toolbutton active pan" onclick="ecan.mapviewer.toolclick('pan')"
+                        title="Pan around map">
+                    </div>
+                    <div id="zoominButton" class="toolbutton zoomin" onclick="ecan.mapviewer.toolclick('zoomin')"
+                        title="Zoom in tool">
+                    </div>
+                    <div id="zoomoutButton" class="toolbutton zoomout" onclick="ecan.mapviewer.toolclick('zoomout')"
+                        title="Zoom out tool">
+                    </div>
+                    <div id="zoompreviousButton" class="toolbutton zoomprevious disabled" onclick="ecan.mapviewer.buttonclick('zoomprevious')"
+                        title="Zoom to the previous extent">
+                    </div>
+                    <div id="zoomnextButton" class="toolbutton zoomnext disabled" onclick="ecan.mapviewer.buttonclick('zoomnext')"
+                        title="Zoom to the next extent">
+                    </div>
+                    <div id="zoomfull" class="toolbutton zoomfull" onclick="ecan.mapviewer.buttonclick('zoomfull')"
+                        title="Zoom to the full extent of all layers">
+                    </div>
+                    <div id="locatetool" class="toolbutton locate" onclick="ecan.mapviewer.buttonclick('locate')"
+                        title="Centre map on input XY coordinates">
+                    </div>
+                    <div id="measuretool" class="toolbutton measure" onclick="ecan.mapviewer.buttonclick('measure')"
+                        title="Show the measurement tools">
+                    </div>
+                    <div id="drawingtool" class="toolbutton draw" onclick="ecan.mapviewer.buttonclick('draw')"
+                        title="Show the drawing tools">
+                    </div>
+                    <div id="printButton" class="toolbutton print" onclick="ecan.mapviewer.buttonclick('print')"
+                        title="Create a printable version of the map">
+                    </div>
+                    <div id="identifyButton" class="toolbutton identify" onclick="ecan.mapviewer.buttonclick('identify')"
+                        title="Identify features in the active layer">
+                    </div>
+                    <div id="queryButton" class="toolbutton query" onclick="ecan.mapviewer.buttonclick('query')"
+                        title="Search for features in the active layer">
+                    </div>
+                    <div id="helpButton" class="toolbutton help" onclick="ecan.mapviewer.buttonclick('help')"
+                        title="Open online help">
+                    </div>
+                </div>
+                <!-- end of other tools -->
+
+            </div>
+            <!-- end of menu container -->
+
+        </div>
+        <!-- end of top nav -->
+        <!-- start of map container -->
+        <div id="mapContainer" data-dojo-type="dijit/layout/BorderContainer" class="loading" data-dojo-props="region: 'center'" style="padding: 0px; width: 100%; height: 100%">
+            <div id="map" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region: 'center',gutters:'false'" style="padding: 0px; width: 100%; height: 100%">
+
+                <div class="resultTools ">
+                    <div id="bottombarButton" class="toolbutton" title="opens the results pane" onclick="ecan.mapviewer.toggleResults('toggle');"></div>
+                    <div class="resultToolsBtns gradBackground">
+                        <div class="toolbutton save" title="Save the selected records to a csv file" onclick="ecan.mapviewer.exportSelection()"></div>
+                        <div class="toolbutton removeSelection" title="Remove the highlighted records from the selection" onclick="ecan.mapviewer.removeHighlighted()"></div>
+                        <div class="toolbutton zoomSelection" title="Zoom to extent of all of the selected records" onclick="ecan.mapviewer.zoomSelection()"></div>
+                        <div class="toolbutton clearHighlight" title="Clear the highlighted records" onclick="ecan.mapviewer.clearHighlightedResults()"></div>
+                        <div class="toolbutton buffer" title="Create a buffer shape of the current records" onclick="ecan.mapviewer.showBufferDialog('results');"></div>
+                        <div class="toolbutton clearSelection" id="clearSelectionButton" onclick="ecan.mapviewer.buttonclick('clearSelection')" title="Clear current search results"></div>
+                    </div>
+                </div>
+                <div id="gpsButton" class="" title="turn on gps" onclick="ecan.mapviewer.buttonclick('gps')"></div>
+            </div>
+        </div>
+        <!-- end of map container -->
+
+        <div id="footDet" class="details gradBackground" dojotype="dijit.layout.BorderContainer" region="bottom"
+            style="height: 20px; overflow: hidden;">
+            <div style="height: 20px;">
+                <div id="mouseLocationX" class="footerContent">
+                    NZTM X: Not initialised
+               
+                </div>
+                <div id="mouseLocationY" class="footerContent">
+                    NZTM Y: Not initialised
+               
+                </div>
+                <div id="mouseGridRef" class="footerContent">
+                    NZTopo50: Not initialised
+               
+                </div>
+                <div class="footerContent divider">
+                </div>
+                <div id="mapScale" class="footerContent">
+                </div>
+                <div class="footerContent divider">
+                </div>
+                <div id="activeTool" class="footerContent">
+                    Current Tool:<span id="activeToolLabel">Pan Tool</span>
+                </div>
+                <div class="footerContent divider">
+                </div>
+                <div id="activeLayer" class="footerContent">
+                    Active Layer:<span id="activeLayerLabel">Not Set</span>
+                </div>
+            </div>
+            <div id="searchResultsGrid" class="hidden noresults">
+                <div class="resultTableContainer">
+                    <table class="resultsTable">
+                        <thead>
+                            <tr>
+                                <th>no results</th>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- end of foot results -->
+    </div>
+    <!-- end of mainContainer -->
+
+    <div id="printDialog" class="hidden">
+        <div id="printDialogContent" class="printDialogContent">
+            <table>
+                <tbody>
+                    <tr>
+                        <td class="rowHeader">Map Template:
+                        </td>
+                        <td>
+                            <select id="templateList" onchange="ecan.mapviewer.removeDownloadBtn();" title="Choose the print template to use" style="width: 215px;">
+                                <option id="tlDefault" value="Default">Default</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="rowHeader">Output Type:
+                        </td>
+                        <td>
+                            <select id="fileTypeList" onchange="ecan.mapviewer.removeDownloadBtn();" title="Select the output file type" style="width: 215px;">
+                                <option value="PDF" selected="selected">PDF</option>
+                                <option value="JPG">JPEG Image</option>
+                                <option value="PNG">PNG Image</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="rowHeader">Image Quality:
+                        </td>
+                        <td>
+                            <select id="qualityList" onchange="ecan.mapviewer.removeDownloadBtn();" title="Select the output file quality" style="width: 215px;">
+                                <!--<option value="96" selected="selected">Screen</option>-->
+                                <option value="200" selected="selected">Good</option>
+                                <option value="300">High</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr style="display: none;">
+                        <td class="rowHeader">Extent Mode:
+                        </td>
+                        <td>
+                            <select id="extentModeList" onchange="ecan.mapviewer.removeDownloadBtn();" title="Select whether to match the scale or the extent of the current map"
+                                style="width: 215px;">
+                                <option value="true">Preserve the map scale</option>
+                                <option value="false" selected="selected">Preserve the map extent</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="rowHeader">Map Title:
+                        </td>
+                        <td>
+                            <input id="mapTitleInput" title="Enter the 'Title Text' to appear on the map" type="text"
+                                style="width: 215px;" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="rowHeader">Author Title:
+                        </td>
+                        <td>
+                            <input id="mapAuthorInput" title="Enter the 'Byline Text' to appear on the map" type="text"
+                                style="width: 215px;" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="printDialogResult" class="printDialogResult">
+        </div>
+        <div id="printDialogWorking" class="printDialogWorking loading">
+            Generating map...
+        </div>
+    </div>
+    <div id="textDialog" class="hidden textDialogContent">
+        <p>
+            Enter text to place in the label
+        </p>
+        <input id="labeltext" type="text" title="Enter the text here" style="width: 250px;" />
+    </div>
+    <div id="bufferDialog" class="hidden bufferDialogContent">
+        <div id="bufferDialogContent">
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="2">Specify the buffer settings
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="rowHeader">Buffer Distance:
+                        </td>
+                        <td>
+                            <select id="bufferOptions" title="Choose the distance to buffer the selected item by"
+                                onchange="ecan.mapviewer.updateBufferDialog()">
+                                <option value="100" selected="selected">100m</option>
+                                <option value="200">200m</option>
+                                <option value="500">500m</option>
+                                <option value="1000">1km</option>
+                                <option value="custom">Custom Distance</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr id="customBufferDistanceRow" style="display: none;">
+                        <td class="rowHeader">Custom Distance (m):
+                        </td>
+                        <td>
+                            <input id="bufferDistance" type="text" title="Enter the number of meters to buffer the selected item by"
+                                value="100" onkeypress="return ecan.tools.isNumberKey(event)" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div id="styleDialog" class="hidden">
+        <div id="styleSettingsContainer" style="display: none;">
+        </div>
+        <div id="textStyleSettingsContainer" style="display: none;">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>Label Text:
+                        </td>
+                        <td>
+                            <input id="labelStyleText" type="text" title="Enter the text here" onchange="ecan.mapviewer.updateTextStyle()" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Font:
+                        </td>
+                        <td>
+                            <select id="fontStyleSelect" title="Select the font to use in new labels" style="font-family: Serif;" class="fontType"></select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Colour:
+                        </td>
+                        <td>
+                            <select id="fontStyleColour" title="Select the colour to use in new labels" class="fontColour"></select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Size:
+                        </td>
+                        <td>
+                            <select id="fontStyleSizeSelect" title="Select the size of the font to use in new labels"
+                                style="font-size: 12pt;" class="fontSize">
+                            </select>
+
+                        </td>
+                    </tr>
+                    <tr style="display: none;">
+                        <td>Rotation:
+                        </td>
+                        <td>
+                            <select id="fontStyleRotation" title="Select the text rotation angle to use in new labels" class="labelRotation"></select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Style:
+                        </td>
+                        <td>
+                            <select id="fontStyleStyle" title="Select the text style to use in new labels" class="fontStyle"></select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div id="disclaimerDialog" class="hidden">
+        <div>
+            <img src="Content/images/Canterbury-Maps-Logo-TAB.png" alt="Canterbury Maps Logo" border="0" style="width: 290px; float: left;" />
+            <p style="text-align: center; padding-top: 90px;">
+                <strong>I agree</strong>
+                <input id="disclaimerCheck"
+                    type="checkbox" onclick="ecan.mapviewer.disclaimerChecked()" />
+            </p>
+        </div>
+        <div id="disclaimerContent" class="textDialogContent">
+        </div>
+    </div>
+    <div id="quickmapsDialog" class="hidden">
+        <div id="quickmapsContent" class="textDialogContent">
+            <div id="groupList">
+                <span>Click one of the icons from the map group categories list to display a list of
+    maps within that category</span>
+            </div>
+            <div id="groupContents" style="display: none;">
+                <div id='header'>
+                    <div id='back' class="backButton" title="go back">
+                    </div>
+                    <div>
+                        <div style='float: left;'>
+                            <span id='groupThumbnail'></span>
+                        </div>
+                        <h1 id='groupTitle'></h1>
+                        <div id='groupDescription'>
+                        </div>
+                    </div>
+                </div>
+                <div id='galleryList' class='mapsList'>
+                </div>
+                <div>
+                    <div id="maps_pagination" class="pagination">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--<script data-dojo-config="async: true" src="Scripts/arcgis_js_api/library/3.3/jsapicompact/js/dojo/dojo/dojo.js"></script>-->
+    <!--<script data-dojo-config="async: true" src="Scripts/arcgis_js_api/library/3.3/jsapi/init.js"></script>-->
+
+    <!--    <script>
+        // esri modules and a custom module
+        require(
+          ["esri/Map", "esri/layers/FeatureLayer", "dojo/parser",
+           "dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dojo/domReady!"
+           , "esri/arcgis/utils", "esri/dijit/Scalebar", "esri/dijit/Measurement", "esri/toolbars/navigation",
+          "esri/dijit/editing/TemplatePicker-all",
+          "dijit/TitlePane",
+          "esri/dijit/BasemapGallery",
+          "esri/tasks/PrintTask",
+          "dijit/Menu",
+          "dijit/form/Button",
+          "dijit/layout/AccordionContainer",
+          "dijit/layout/AccordionPane",
+          "esri/dijit/Print",
+          "esri/dijit/Popup",
+          "dijit/MenuSeparator",
+          "dijit/MenuItem",
+          "esri/symbol"
+          ], function () {
+              dojo.addOnLoad(init);
+          }
+        );
+    </script>-->
+
+    <!--<script type="text/javascript" src="Scripts/arcgis_js_api/library/3.3/jsapicompact/js/dojo/dojox/gfx/svg.js"></script>
+    <script type="text/javascript" src="Scripts/arcgis_js_api/library/3.3/jsapicompact/js/esri/nls/jsapi_en-us.js"></script>
+    <script type="text/javascript" src="Scripts/arcgis_js_api/library/3.3/jsapicompact/js/esri/arcgis/utils.js"></script>
+    <script type="text/javascript" src="Scripts/arcgis_js_api/library/3.3/jsapicompact/js/dojo/dijit/dijit.js"></script>
+    <script type="text/javascript" src="Scripts/arcgis_js_api/library/3.3/jsapicompact/js/esri/dijit/Scalebar.js"></script>
+    <script type="text/javascript" src="Scripts/arcgis_js_api/library/3.3/jsapicompact/js/dojo/dijit/TitlePane.js"></script>
+    <script type="text/javascript" src="Scripts/arcgis_js_api/library/3.3/jsapicompact/js/esri/dijit/Measurement.js"></script>
+    <script type="text/javascript" src="Scripts/arcgis_js_api/library/3.3/jsapicompact/js/dojo/dijit/layout/BorderContainer.js"></script>
+    <script type="text/javascript" src="Scripts/arcgis_js_api/library/3.3/jsapicompact/js/dojo/dijit/layout/ContentPane.js"></script>
+    <script type="text/javascript" src="Scripts/arcgis_js_api/library/3.3/jsapicompact/js/esri/dijit/Popup.js"></script>
+    <script type="text/javascript" src="Scripts/arcgis_js_api/library/3.3/jsapicompact/js/esri/dijit/Print.js"></script>
+    <script type="text/javascript" src="Scripts/arcgis_js_api/library/3.3/jsapicompact/js/dojo/dijit/Menu.js"></script>
+    <script type="text/javascript" src="Scripts/arcgis_js_api/library/3.3/jsapicompact/js/esri/dijit/BasemapGallery.js"></script>
+    <script type="text/javascript" src="Scripts/arcgis_js_api/library/3.3/jsapicompact/js/esri/tasks/PrintTask.js"></script>
+    <script type="text/javascript" src="Scripts/arcgis_js_api/library/3.3/jsapicompact/js/esri/dijit/editing/TemplatePicker-all.js"></script>
+    <script type="text/javascript" src="Scripts/arcgis_js_api/library/3.3/jsapicompact/js/esri/toolbars/navigation.js"></script>
+    <script type="text/javascript" src="Scripts/arcgis_js_api/library/3.3/jsapicompact/js/dojo/dijit/nls/loading.js"></script>
+    <script type="text/javascript" src="Scripts/arcgis_js_api/library/3.3/jsapicompact/js/dojo/dojo/html.js"></script>
+    <script type="text/javascript" src="Scripts/arcgis_js_api/library/3.3/jsapicompact/js/dojo/dojo/string.js"></script>
+    <script type="text/javascript" src="Scripts/arcgis_js_api/library/3.3/jsapicompact/js/dojo/dojo/cookie.js"></script>-->
+
+    <!--    <script type="text/javascript" src="http://maps.ecan.govt.nz/arcgis_js_api/library/3.3/jsapicompact/init.js"></script>-->
+
+
+    <!--<script type="text/javascript" src="http://gis.ecan.govt.nz/arcgis_js_api/library/3.2/jsapicompact/init.js"></script>-->
+
+
+
+    <!-- load js files that are used in desktop ONLY -->
+    <!--    <script type="text/javascript">
+        //load js mobile files
+        if (isMobile.any() == null) {
+            loadjscssfile("Scripts/printtemplates.js?version=20121005", "js"); ////dynamically load and add this .css file
+            loadjscssfile("Scripts/jquery.table2csv.0.1.1.min.js", "js");
+            loadjscssfile("Scripts/cmaps.mapviewer.drawingsettings.js?version=20130122", "js");
+            loadjscssfile("Scripts/datejs.js", "js");
+        }
+    </script>-->
+    <script type="text/javascript" src="Scripts/quickmaps.config.js"></script>
+    <!-- load js files that are used in all form factors -->
+    <script type="text/javascript" src="Scripts/jquery-1.9.1.min.js"></script>
+    <script>$.uiBackCompat = false;</script>
+    <script type="text/javascript" src="Scripts/jquery-ui-1.10.1.custom.min.js"></script>
+
+    <!-- bootstrap -->
+    <!--<script src="bootstrap/js/bootstrap.min.js"></script>-->
+
+    <!-- to move -->
+    <script type="text/javascript" src="Scripts/printtemplates.js?version=20130319.2"></script>
+    <script type="text/javascript" src="Scripts/jquery.table2csv.0.1.1.min.js"></script>
+    <script type="text/javascript" src="Scripts/cmaps.mapviewer.drawingsettings.js?version=20130319.2"></script>
+    <script type="text/javascript" src="Scripts/datejs.js"></script>
+    <script type="text/javascript" src="Scripts/json2.js"></script>
+    <script type="text/javascript" src="Scripts/mapsheets.js?version=20130319.2"></script>
+    <script src="Scripts/jquery.cookie.js"></script>
+
+
+    <script data-dojo-config="async: true" src="http://serverapi.arcgisonline.com/jsapi/arcgis/3.4/"></script>
+    <!-- FOR MOBILE NATIVE VERSION
+        <script data-dojo-config="async: true" src="Scripts/arcgis_js_api/library/3.3/jsapi/init.js"></script>
+        -->
+
+    <script type="text/javascript" src="Scripts/cmaps.mapviewer.js?version=20130319.2"></script>
+    <script type="text/javascript" src="Scripts/cmaps.coordinates.js?version=20130319.2"></script>
+    <script type="text/javascript" src="Scripts/quickmaps.js?version=20130319.2"></script>
+
+    <!-- ADD TO HOME pluggin
+        -->
+    <script src="Scripts/add2home.js"></script>
+
+
+    <!-- load js files that are used in desktop and tablet ONLY -->
+
+    <!-- load js files that are used in tablet ONLY -->
+    <!-- load js files that are used in mobile ONLY -->
+
+    <script type="text/javascript">
+
+        // FOR USE WITH bootstrap alerts.
+        //$('#browserSupport').bind('closed', function () {
+        //    // do something…
+        //    ///$.cookie('cmaps_viewer_hide_agents', 'hidden', { expires: 7 });
+        //    console.log('dismiss action');
+
+        //    setTimeout(function () {
+        //        // Call for the dojo components to be resized
+        //        var mc = dijit.byId('mainContainer');
+        //        mc.resize();
+
+        //        // Reset the map size
+        //        ecan.mapviewer.map.resize();
+        //        ecan.mapviewer.map.reposition();
+        //    }
+        //    , 500)
+
+        //})
+    </script>
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-3089899-27']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+
+    </script>
+    <script type="text/javascript">
+    var uvOptions = {};
+    (function () {
+        var uv = document.createElement('script'); uv.type = 'text/javascript'; uv.async = true;
+        uv.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'widget.uservoice.com/del60uHRRsLCC10LZcZKA.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(uv, s);
+    })();
+    </script>
+</body>
+</html>

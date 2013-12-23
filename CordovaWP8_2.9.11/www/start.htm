@@ -1,0 +1,102 @@
+<html>
+    <meta
+        name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+        <!--
+         
+         Copyright License  - Canterbury Regional Council and Partners
+         Attribution-NonCommercial-ShareAlike 3.0 New Zealand (CC BY-NC-SA 3.0 NZ)
+         http://creativecommons.org/licenses/by-nc-sa/3.0/nz/
+         
+         -->
+        <!-- iOS Devices -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+            <meta name="apple-mobile-web-app-status-bar-style" content="black">
+                      <meta name="title" content="Canterbury Maps">
+                            <link rel="shortcut icon" href="favicon.ico" />
+                            <title>Canterbury Maps</title>
+                            <!-- Bootstrap -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+    <body>
+<div class="container">
+<div class='row'>
+    <div class='span12'>
+        <div style="text-align: center;margin: auto 0px;">
+        <img src='Content/images/Canterbury-Maps-Logo-TAB.png' />
+        </div>
+        <div id='noNetwork' class="alert-error alert-block"  style="display:none;" >
+                <div style="text-align: center;margin: auto 0px;">
+                    <h2>Opps :p</h3>
+                <p>This application needs the internet to function correctly.</p>
+                <p>Go to your devices network settings and turn on either cellular or wifi networks.</p>
+                <p>Then come back here.</p>
+                </div>
+            </div>
+        <br/>
+        <div id='loading' style="text-align: center;margin: auto 0px;">
+            <img id='loaderImage' src='Content/images/loading-blue-large.gif' style="width:35px;height:35px" />
+            <p style="color:yellowgreen">loading ...</p>
+        </div>
+    </div>
+</div>
+</div>
+        </body>
+                                <script type="text/javascript" src="cordova.js"></script>
+                                <script type="text/javascript">
+                                    
+                                    var hash="";
+                                    
+                                    //grab reffering page for map & extent to go back to
+                                    if(window.location.hash !=null) hash = window.location.hash;
+
+                                    // Wait for Cordova to load
+                                    //
+                                    document.addEventListener("deviceready", onDeviceReady, false);
+
+                                    // Cordova is loaded and it is now safe to make calls Cordova methods
+                                    //
+                                    function onDeviceReady() {
+
+                                        document.addEventListener("offline", checkConnection, false);
+                                        document.addEventListener("online", checkConnection, false);
+
+                                        checkConnection();
+
+
+                                    }
+
+                                    function loadURL(url, target) {
+                                        if (debugMode) console.log('loading url:', url, ' based on:', target);
+                                        if (target == null) target = '_self';
+                                        if (target == '_blank') target = '_blank';
+                                        var ref = window.open(url, target, 'location=yes,enableViewportScale=yes,presentationstyle=pagesheet');
+                                    }
+
+                                    function checkConnection() {
+                                        var networkState = navigator.connection.type;
+
+                                        var states = {};
+                                        states[Connection.UNKNOWN] = 'Unknown connection';
+                                        states[Connection.ETHERNET] = 'Ethernet connection';
+                                        states[Connection.WIFI] = 'WiFi connection';
+                                        states[Connection.CELL_2G] = 'Cell 2G connection';
+                                        states[Connection.CELL_3G] = 'Cell 3G connection';
+                                        states[Connection.CELL_4G] = 'Cell 4G connection';
+                                        states[Connection.CELL] = 'Cell generic connection';
+                                        states[Connection.NONE] = 'No network connection';
+
+                                        //alert to say no network connection so needed
+                                        //alert(networkState);
+                                        if (networkState != 'none') {
+                                            document.getElementById('noNetwork').style.display = 'none';
+                                            document.getElementById('loading').style.display = 'block';
+                                            window.open('index.html' + hash, '_self');
+                                        }
+                                        else {
+                                            document.getElementById('noNetwork').style.display = 'block';
+                                            document.getElementById('loading').style.display = 'none';
+                                        }
+                                    }
+
+                                    </script>
+</html>

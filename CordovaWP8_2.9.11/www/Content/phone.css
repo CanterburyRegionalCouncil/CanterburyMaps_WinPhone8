@@ -1,0 +1,196 @@
+﻿/* PHONE & Tablet Specific css for hidding button etc.*/
+#panButton, #zoominButton, #zoomoutButton, #zoomnextButton, #zoompreviousButton,
+#zoomfull, #locatetool, #printButton, #helpButton, #resultsButton,
+#mouseLocationX, #mouseLocationY, #mouseGridRef, #mapScale, #helpContainer, #shareButton
+{
+    display: none;
+}
+
+
+* {
+            -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
+            -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
+    }
+
+*:not(input,textarea) {
+    -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
+    -webkit-user-select: none;                 /* prevent copy paste, to allow, change 'none' to 'text' */
+}
+
+/* PHONE Specific css for hidding button etc.*/
+
+#headingContainer, #measuretool, #drawingtool, #identifyButton, #queryButton, 
+#clearSelectionButton, #footDet, .esriScalebar, #bottombarButton, #toolsli
+{
+    display: none;
+}
+
+#sidebarmenuButton
+{
+    left: 0px!important;
+    position: relative;
+}
+
+.ui-tabs-anchor
+{
+    padding: 1px!important;
+}
+
+.ui-tabs-panel
+{
+    padding: 1px!important;
+}
+
+.ui-widget-header
+{
+    background-color: #ddd;
+}
+
+@media all and (max-width: 320px)
+{
+    #searchText
+    {
+        width: 180px;
+    }
+}
+
+/* iPhone or android capabile mutli touch Specific css for slider etc.*/
+
+#map_zoom_slider
+{
+}
+
+
+
+
+/*   GPS related */
+
+#gpsButton
+{
+    position: absolute;
+    background-image: url('../Content/images/48x48/GPS.png');
+    background-color: white;
+    bottom: 5px;
+    left: 5px;
+    z-index: 9999;
+    width: 48px;
+    height: 48px;
+    cursor: pointer;
+    margin: 3px;
+    background-repeat: no-repeat;
+}
+
+.GPSon
+{
+    background-color: lime!important;
+    -webkit-animation-duration: 3s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-name: pulse;
+    -moz-animation-duration: 3s;
+    -moz-animation-iteration-count: infinite;
+    -moz-animation-name: pulse;
+}
+
+@-webkit-keyframes pulse
+{
+    0%
+    {
+        opacity: 1.0;
+    }
+
+    45%
+    {
+        opacity: 0.20;
+    }
+
+    100%
+    {
+        opacity: 1.0;
+    }
+}
+
+@-moz-keyframes pulse
+{
+    0%
+    {
+        opacity: 1.0;
+    }
+
+    45%
+    {
+        opacity: 0.20;
+    }
+
+    100%
+    {
+        opacity: 1.0;
+    }
+}
+
+#map_graphics_layer
+{
+    -webkit-animation-duration: 3s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-name: pulse;
+    -moz-animation-duration: 3s;
+    -moz-animation-iteration-count: infinite;
+    -moz-animation-name: pulse;
+}
+
+#sidebarmenuButton
+{
+}
+
+#sidebar
+{
+    top: 0px!important;
+    z-index: 0!important;
+    width: 290px;
+}
+
+/*  on off button */
+
+
+/*   test move map effect 
+#mapContainer {
+z-index:1!important;
+}
+*/
+
+/*   HIDE BACKGROUND ON TABS*/
+#sidebarTabs
+{
+    padding: 0px;
+}
+
+    #sidebarTabs .ui-tabs-nav
+    {
+        background: transparent;
+        border-width: 0px 0px 1px 0px;
+        -moz-border-radius: 0px;
+        -webkit-border-radius: 0px;
+        border-radius: 0px;
+    }
+
+    #sidebarTabs .ui-tabs-panel
+    {
+        margin: 0em 0.2em 0.2em 0.2em;
+    }
+
+
+    #sidebarTabs > ul
+    {
+        vertical-align: middle!important;
+        /* IE10 Consumer Preview */
+        background-image: -ms-linear-gradient(bottom, #FFFFFF 0%, #DDDDDD 100%)!important;
+        /* Mozilla Firefox */
+        background-image: -moz-linear-gradient(bottom, #FFFFFF 0%, #DDDDDD 100%)!important;
+        /* Opera */
+        background-image: -o-linear-gradient(bottom, #FFFFFF 0%, #DDDDDD 100%)!important;
+        /* Webkit (Safari/Chrome 10) */
+        background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #FFFFFF), color-stop(1, #DDDDDD))!important;
+        /* Webkit (Chrome 11+) */
+        background-image: -webkit-linear-gradient(bottom, #FFFFFF 0%, #DDDDDD 100%)!important;
+        /* W3C Markup, IE10 Release Preview */
+        background-image: linear-gradient(to top, #FFFFFF 0%, #DDDDDD 100%)!important;
+    }
